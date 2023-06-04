@@ -31,7 +31,7 @@ def send_to_clipboard(clip_type, data):
     win32clipboard.SetClipboardData(clip_type, data)
     win32clipboard.CloseClipboard()
 
-BlackList = ["abdulrahman albaroudi", "reem"]
+BlackList = ["abdulrahman albaroudi", "Lına barodi Türkçe"]
 keyWords = ['tişkler', 'teşe', 'tşk', 'tişk', 'tşe', 'tşi', 'tış', 'tşı','tiskler', 'tese', 'tisk', 'tse', 'tsi', 'tıs', 'tsı']
 
 while(1):
@@ -41,13 +41,15 @@ while(1):
 
     # detect if your annoying friend texted you
     for element in latestChats:
-        name = element.find_element(By.XPATH, "./div/div/div/div[2]/div[1]/div[1]/span").text.lower
-        isNotRead = element.find_element(By.XPATH, "./div/div/div/div[2]/div[2]/div[2]/span[1]/div").is_displayed
-        if name in BlackList and isNotRead:
+        name = element.find_element(By.XPATH, "./div/div/div/div[2]/div[1]/div[1]/span").text
+        # isNotRead = element.find_element(By.XPATH, "./div/div/div/div[2]/div[2]/div[2]/span[1]/div").is_displayed
+        if name in BlackList : #and isNotRead:
             annoyingFriend = dict(e=element, n=name )
-        break
+            break
 
     if annoyingFriend is not None:
+        print("ANNOYING FRIEND DETECTED")
+        print(annoyingFriend["n"])
         annoyingFriend["e"].click()
 
         # get unread messages
@@ -61,7 +63,9 @@ while(1):
         # detect if the message contains a keyword
         for m in messages:
             message = m.find_element(By.XPATH, "//*[@id='main']/div[2]/div/div[2]/div[3]/div[10]/div/div/div/div[1]/div[1]/div[1]/div/span[1]/span").text
-            if message.lower in keyWords:
+            if message in keyWords:
+                print("ANNOYING MESSAGE DETECTED")
+                print(message)
                 # send response
                 textBox=driver.find_element(By.XPATH,"//*[@id='main']/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]")
                 textBox.click()
