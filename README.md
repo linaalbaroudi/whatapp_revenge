@@ -21,10 +21,16 @@ pip install winclip32
 ```
 
 ## 5. fifth
+run revenge.py 
+```
+python revenge.py 
+```
+or
 run Revenge_bot.py 
 ```
 python Revenge_bot.py 
 ```
+
 
 ## 6. final
 scan the whatsapp bar code 
