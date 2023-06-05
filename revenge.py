@@ -22,8 +22,8 @@ loggedInPage = WebDriverWait(driver, timeout=60).until(lambda d: d.find_element(
 assert loggedInPage.is_displayed
 
 # Texts which you want to send
-text= "you have made a mistake dear"
-text2="  Its time to REPENT ! "
+text= "You have made a mistake dear "
+text2="\nIts time to REPENT ! "
 
 def send_to_clipboard(clip_type, data):
     win32clipboard.OpenClipboard()
@@ -31,7 +31,8 @@ def send_to_clipboard(clip_type, data):
     win32clipboard.SetClipboardData(clip_type, data)
     win32clipboard.CloseClipboard()
 
-BlackList = ["abdulrahman albaroudi", "Lına barodi Türkçe"]
+whiteList = "abdulrahman albaroudi"
+blackList = ["Lına barodi Türkçe", "+90 535 493 91 20"]
 keyWords = ['tişkler', 'teşe', 'tşk', 'tişk', 'tşe', 'tşi', 'tış', 'tşı','tiskler', 'tese', 'tisk', 'tse', 'tsi', 'tıs', 'tsı']
 
 while(1):
@@ -42,36 +43,50 @@ while(1):
     # detect if your annoying friend texted you
     for element in latestChats:
         name = element.find_element(By.XPATH, "./div/div/div/div[2]/div[1]/div[1]/span").text
-        # isNotRead = element.find_element(By.XPATH, "./div/div/div/div[2]/div[2]/div[2]/span[1]/div").is_displayed
-        if name in BlackList : #and isNotRead:
-            annoyingFriend = dict(e=element, n=name )
-            break
+        print("name = {}".format(name))
+
+        if name in blackList :
+            # Check if there is any unread message
+            newMsgExist = False
+            newMessagesCount = 0
+            try:
+                number = element.find_element(By.XPATH,"./div/div/div/div[2]/div[2]/div[2]/span[1]/div/span").text
+                print("number = {}".format(number))
+                newMessagesCount = int(number)
+            except:
+                print("no new messages")
+            else: 
+                newMsgExist=True
+
+            if newMsgExist : 
+                annoyingFriend = dict(e=element, n=name, c=newMessagesCount)
+                break
 
     if annoyingFriend is not None:
         print("ANNOYING FRIEND DETECTED")
         print(annoyingFriend["n"])
         annoyingFriend["e"].click()
 
+        time.sleep(10)
         # get unread messages
-        messages = driver.find_elements(By.XPATH, "//*[@id='main']/div[2]/div/div[2]/div[3]")
-        for m in messages:
-            if m.get_attribute("class") != "row" : 
-                messages.remove(m)
-                break
-            messages.remove(m)
+        messages = driver.find_elements(By.XPATH, "//div[contains(@data-testid,'msg-container')]")
+        print(annoyingFriend['c'])
+        newMessages = messages[-annoyingFriend['c']:]
+        for m in newMessages:
+            message = m.find_element(By.XPATH, "./div[1]/div[1]/div[1]/div/span[1]/span").text
+            print(message)
 
-        # detect if the message contains a keyword
-        for m in messages:
-            message = m.find_element(By.XPATH, "//*[@id='main']/div[2]/div/div[2]/div[3]/div[10]/div/div/div/div[1]/div[1]/div[1]/div/span[1]/span").text
+            # detect if the message contains a keyword
             if message in keyWords:
-                print("ANNOYING MESSAGE DETECTED")
-                print(message)
+                print("ANNOYING MESSAGE DETECTED '{}'".format(message))
+
                 # send response
-                textBox=driver.find_element(By.XPATH,"//*[@id='main']/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]")
+                textBox = driver.find_element(By.XPATH,"//*[@id='main']/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]")
                 textBox.click()
                 textBox.send_keys(text)
                 textBox.send_keys(annoyingFriend["n"])
                 textBox.send_keys(text2)
+                # pick arandom image
                 imageid = str(int(10*random.random()))
                 filepath = 'reaction'+imageid+'.jpg'
                 image = Image.open(filepath)
@@ -81,12 +96,17 @@ while(1):
                 output.close()
                 send_to_clipboard(win32clipboard.CF_DIB, data)
                 textBox.send_keys(Keys.CONTROL,"v")
-                sendButton = WebDriverWait(driver, timeout=60).until(lambda d: d.find_element(By.XPATH,"//*[@id='app']/div/div/div[3]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div"))
+                time.sleep(2)
+                sendButton = WebDriverWait(driver, timeout=60).until(lambda d: d.find_element(By.XPATH,"//*[@data-testid='send']"))
                 assert loggedInPage.is_displayed
                 sendButton.click()
+                time.sleep(6)
                 break
-        # close chat
-        driver.find_element(By.XPATH, "//*[@id='pane-side']/div[1]/div/div/div/div[2]").click()
+
+    # driver.find_element(By.XPATH, "//*[@data-testid='search']").click()
+    # driver.find_element(By.XPATH,"//*[@id='side']/div[1]/div/div/div[2]/div/div[1]").send_keys(whiteList)
+    # driver.find_element(By.XPATH,"(//[@id='pane-side']/div[1]/div/div/)[last()]").click()
+    
 
 # close chrome driver
 driver.close()  
