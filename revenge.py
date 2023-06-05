@@ -31,9 +31,9 @@ def send_to_clipboard(clip_type, data):
     win32clipboard.SetClipboardData(clip_type, data)
     win32clipboard.CloseClipboard()
 
-whiteList = "abdulrahman albaroudi"
-blackList = ["Lına barodi Türkçe", "+90 535 493 91 20"]
-keyWords = ['tişkler', 'teşe', 'tşk', 'tişk', 'tşe', 'tşi', 'tış', 'tşı','tiskler', 'tese', 'tisk', 'tse', 'tsi', 'tıs', 'tsı']
+whiteList = "add your trusted friend's whatsapp name here"
+blackList = ["annoying friend1", "annoying friend2"]
+keyWords = ['bla', 'please', '?', 'can', 'would', 'tşe', 'tişşkurler']
 
 while(1):
     # get recent chats
