@@ -31,9 +31,12 @@ def send_to_clipboard(clip_type, data):
     win32clipboard.SetClipboardData(clip_type, data)
     win32clipboard.CloseClipboard()
 
-whiteList = "add your trusted friend's whatsapp name here"
-blackList = ["annoying friend1", "annoying friend2"]
-keyWords = ['bla', 'please', '?', 'can', 'would', 'tşe', 'tişşkurler']
+# !!! customise your code here !!!
+# **CASE SENSITIVE**
+whiteList = "Put your trusted friend name here"
+blackList = ["annoying friend 1", "annoying friend 1"]
+keyWords = ['hello', 'teşe', 'hi', '?', 'please', 'can', 'would', 'want']
+# end
 
 while(1):
     # get recent chats
@@ -103,11 +106,18 @@ while(1):
                 time.sleep(6)
                 break
 
-    # driver.find_element(By.XPATH, "//*[@data-testid='search']").click()
-    # driver.find_element(By.XPATH,"//*[@id='side']/div[1]/div/div/div[2]/div/div[1]").send_keys(whiteList)
-    # driver.find_element(By.XPATH,"(//[@id='pane-side']/div[1]/div/div/)[last()]").click()
+    # close the chat and check for annoying messages again
+    searchBox = driver.find_element(By.XPATH,"//*[@id='side']/div[1]/div/div/div[2]/div/div[1]")
+    searchBox.click()
+    searchBox.send_keys(whiteList)
+    time.sleep(2)
+    trustedChat = driver.find_element(By.XPATH,"//span[@title='{}']".format(whiteList))
+    print(trustedChat.text)
+    trustedChat.click()
+    time.sleep(2)
+    goBack = driver.find_element(By.XPATH,"//span[@data-testid='search']")
+    goBack.click()
     
-
 # close chrome driver
 driver.close()  
 driver.quit()
