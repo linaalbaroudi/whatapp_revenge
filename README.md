@@ -1,38 +1,39 @@
-# whatapp_revenge
-detect your annoying friends' messages and send reaction to them automatically
+# Whatapp_revenge
+Detects your annoying friends' messages and send reaction to them automatically
 
-## 1. first
-Download and install Python on Windows
+## 1. Download and install Python
 
-## 2. second
-Then install Selenium libraries in Python
+## 2. Then install Selenium in Python
 ```
 Python -m pip install -U Selenium 
 ```
-## 3. third
-download the project and extract it
 
-## 4. fourth
-run the following commands
+## 3. Download and extract the project file
+
+## 4. Install libraries
+- open the terminal in project file 
+- run the following commands
 ```
 pip install pillow
 pip install pywin32  
 pip install winclip32
 ```
 
-## 5. fifth
-run revenge.py 
+## 5. Customise and run the code
+- open 
+- update the following
+```
+  # !!! customise your code here !!!
+  # **CASE SENSITIVE**
+  whiteList = "Put your trusted friend name here"
+  blackList = ["annoying friend 1", "annoying friend 2"]
+  keyWords = ['hello', 'teşe', 'hi', '?', 'please', 'can', 'would', 'want']
+  # end
+```
+- run
 ```
 python revenge.py 
 ```
-or
-run Revenge_bot.py 
-```
-python Revenge_bot.py 
-```
 
-
-## 6. final
-scan the whatsapp bar code 
-
+## 6. scan the whatsapp bar code 
 after this step, whenever your annoying fiends send you an annoying message, a reaction photo and a message will will be sent to him/her.
